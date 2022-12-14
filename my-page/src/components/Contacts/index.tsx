@@ -1,29 +1,21 @@
 import { FC } from "react";
+import { ContactItem, ContactItemProps } from "./ContactItem";
 
 const Contacts: FC<ContactsProps> = ({ contacts }) => {
   return (
     <>
       <h4>Here are my contacts</h4>
       <ul>
-        {contacts.map((element: Contact) => {
-          return (
-            <li>
-              <a href={element.link}>{element.name}</a>
-            </li>
-          );
+        {contacts.map((element: ContactItemProps) => {
+          return <ContactItem {...element} />;
         })}
       </ul>
     </>
   );
 };
 
-export default Contacts;
-
 type ContactsProps = {
-  contacts: Contact[];
+  contacts: ContactItemProps[];
 };
 
-type Contact = {
-  name: string;
-  link: string;
-};
+export default Contacts;
