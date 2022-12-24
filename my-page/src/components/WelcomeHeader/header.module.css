@@ -1,0 +1,17 @@
+.main {
+  padding: 20px;
+  letter-spacing: 1px;
+}
+.main span {
+  animation: space 2s ease-in-out 0s infinite alternate;
+  padding: 0 5px;
+}
+
+@keyframes space {
+  0% {
+    border-bottom: 7px solid darkslategray;
+  }
+  100% {
+    border-bottom: 7px solid purple;
+  }
+}

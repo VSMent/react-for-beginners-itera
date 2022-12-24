@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { ContactItem, ContactItemProps } from "./ContactItem";
+import styles from "./contacts.module.css";
 
 const Contacts: FC<ContactsProps> = ({ contacts }) => {
   return (
     <>
-      <h4>Here are my contacts</h4>
-      <ul>
+      <h3 className={styles.header}>Here are my contacts</h3>
+      <ul className={styles.list}>
         {contacts.map((element: ContactItemProps) => {
           return <ContactItem {...element} />;
         })}

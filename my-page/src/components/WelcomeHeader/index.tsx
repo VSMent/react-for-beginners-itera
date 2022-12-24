@@ -1,8 +1,12 @@
 import { Component, ReactNode } from "react";
-
+import style from "./header.module.css";
 class WellcomeHeader extends Component<WellcomeHeaderProps> {
   render(): ReactNode {
-    return <h1>Hello, I am {this.props.name}</h1>;
+    return (
+      <h1 className={style.main}>
+        Hello, I am <span>{this.props.name}</span>
+      </h1>
+    );
   }
 }
 
