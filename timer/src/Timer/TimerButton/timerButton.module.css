@@ -1,0 +1,15 @@
+.button {
+  background-color: hsl(180, 25%, 25%);
+  font-size: inherit;
+  color: inherit;
+  border: 0;
+  display: inline-block;
+  margin: 0 50px;
+  padding: 10px 20px;
+}
+.button:hover {
+  background-color: hsl(180, 25%, 30%);
+}
+.button:active {
+  background-color: hsl(180, 25%, 20%);
+}
