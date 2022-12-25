@@ -1,3 +1,16 @@
+# Timer
+### It should
+- [x] have two buttons start and stop;
+- [ ] be stopped by default;
+- [ ] on start, App should display time in format HH:MM:SS;
+- [ ] on start page title should be changed to "Timer is running";
+- [ ] on stop timer should be stopped, the latest value should stay;
+- [ ] on stop, page title should be returned back to normal;
+- [ ] do it using context;
+- [ ] Implement same functionality with MobX.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
