@@ -1,12 +1,12 @@
 import { FC } from "react";
-import styles from "./timerButton.module.css";
+import styles from "./stopwatchButton.module.css";
 
-type TimerButtonProps = {
+type StopwatchButtonProps = {
   text: string;
   callback: () => void;
 };
 
-const TImerButton: FC<TimerButtonProps> = ({ text, callback }) => {
+const StopwatchButton: FC<StopwatchButtonProps> = ({ text, callback }) => {
   return (
     <button type="button" className={styles.button} onClick={callback}>
       {text}
@@ -14,4 +14,4 @@ const TImerButton: FC<TimerButtonProps> = ({ text, callback }) => {
   );
 };
 
-export default TImerButton;
+export default StopwatchButton;

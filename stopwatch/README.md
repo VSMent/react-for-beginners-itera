@@ -1,4 +1,4 @@
-# Timer
+# Stopwatch
 ### It should
 - [x] have two buttons start and stop;
 - [ ] be stopped by default;

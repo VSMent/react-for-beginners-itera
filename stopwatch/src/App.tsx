@@ -1,11 +1,11 @@
 import "./App.css";
-import Timer from "./Timer";
+import Stopwatch from "./Stopwatch";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Timer />
+        <Stopwatch />
       </header>
     </div>
   );
