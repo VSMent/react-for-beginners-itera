@@ -1,0 +1,7 @@
+.on {
+  font-style: normal;
+}
+.off {
+  font-style: italic;
+  text-decoration: underline;
+}

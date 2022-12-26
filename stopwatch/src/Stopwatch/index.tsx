@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import styles from "./stopwatch.module.css";
 import StopwatchButton from "./StopwatchButton";
+import TimeHeader from "./TimeHeader";
 
 const prependZero = (str: string) => (str.length > 1 ? str : "0" + str);
 const convertSecondsToTimeString = (seconds: number) => {
@@ -31,6 +32,7 @@ const Stopwatch: FC = () => {
     return () => {
       clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.currentStatus]);
 
   const tick = () => {
@@ -66,7 +68,10 @@ const Stopwatch: FC = () => {
           : styles.stopwatchOff
       }
     >
-      <h2>{convertSecondsToTimeString(state.timePassed)}</h2>
+      <TimeHeader
+        text={convertSecondsToTimeString(state.timePassed)}
+        active={state.currentStatus === "started"}
+      />
       <div className={styles.buttonRow}>
         <StopwatchButton text={"Start"} callback={startStopwatch} />
         <StopwatchButton text={"Stop"} callback={stopStopwatch} />
