@@ -1,0 +1,9 @@
+.stopwatchOff {
+  border: 1px solid hsl(180, 25%, 25%);
+}
+.stopwatchOn {
+  border: 1px solid hsl(180, 25%, 50%);
+}
+.buttonRow {
+  margin: 5px 0 25px;
+}

@@ -10,40 +10,42 @@ const convertSecondsToTimeString = (seconds: number) => {
   return `${h}:${m}:${s}`;
 };
 let defaultTitle = "";
-const DefaultStopwatchState = {
-  stopwatchState: "stopped",
-  startTime: 0,
-  timePassed: 0,
+type StopwatchState = {
+  currentStatus: "stopped" | "started";
+  timePassed: number;
 };
 
 const Stopwatch: FC = () => {
-  const [state, setState] = useState(DefaultStopwatchState);
+  const [state, setState] = useState<StopwatchState>({
+    currentStatus: "stopped",
+    timePassed: 0,
+  });
   useEffect(() => {
     defaultTitle = document.title;
   }, []);
   useEffect(() => {
     let interval: NodeJS.Timer;
-    if (state.stopwatchState === "started") {
+    if (state.currentStatus === "started") {
       interval = setInterval(tick, 1000);
     }
     return () => {
       clearInterval(interval);
     };
-  }, [state.stopwatchState]);
+  }, [state.currentStatus]);
 
   const tick = () => {
-    setState({
+    setState((prevState) => ({
       ...state,
-      timePassed: Math.floor((Date.now() - state.startTime) / 1000),
-    });
+      timePassed: prevState.timePassed + 1,
+    }));
+    console.log("t");
   };
 
   const startStopwatch = () => {
     setState({
       ...state,
       timePassed: 0,
-      startTime: Date.now(),
-      stopwatchState: "started",
+      currentStatus: "started",
     });
     document.title = "Timer is running";
   };
@@ -51,19 +53,25 @@ const Stopwatch: FC = () => {
   const stopStopwatch = () => {
     setState({
       ...state,
-      stopwatchState: "stopped",
+      currentStatus: "stopped",
     });
     document.title = defaultTitle;
   };
 
   return (
-    <>
+    <div
+      className={
+        state.currentStatus === "started"
+          ? styles.stopwatchOn
+          : styles.stopwatchOff
+      }
+    >
       <h2>{convertSecondsToTimeString(state.timePassed)}</h2>
-      <div>
+      <div className={styles.buttonRow}>
         <StopwatchButton text={"Start"} callback={startStopwatch} />
         <StopwatchButton text={"Stop"} callback={stopStopwatch} />
       </div>
-    </>
+    </div>
   );
 };
 export default Stopwatch;
