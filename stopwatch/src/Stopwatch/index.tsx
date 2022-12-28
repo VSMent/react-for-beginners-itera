@@ -12,6 +12,7 @@ const defaultStopwatchState: StopwatchState = {
   currentStatus: "stopped",
   timePassed: 0,
 };
+
 export const StopwatchCtx = createContext(defaultStopwatchState);
 
 type StopwatchBtn = {
@@ -87,10 +88,9 @@ const Stopwatch: FC = () => {
           : styles.stopwatchOff
       }
     >
-      <StopwatchCtx.Provider value={defaultStopwatchState}>
+      <StopwatchCtx.Provider value={state}>
         <TimeHeader />
       </StopwatchCtx.Provider>
-      {/* {...b,startButton:{...b.startButton,callback:a}} */}
       <div className={styles.buttonRow}>
         <StopwatchButtonCtx.Provider
           value={{ ...defaultStartButtonState, callback: startStopwatch }}
