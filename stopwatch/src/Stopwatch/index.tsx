@@ -1,26 +1,45 @@
-import { FC, useEffect, useState } from "react";
+import { createContext, FC, useEffect, useState } from "react";
 import styles from "./stopwatch.module.css";
 import StopwatchButton from "./StopwatchButton";
 import TimeHeader from "./TimeHeader";
 
-const prependZero = (str: string) => (str.length > 1 ? str : "0" + str);
-const convertSecondsToTimeString = (seconds: number) => {
-  const h = prependZero(Math.floor(seconds / 3600).toString(10));
-  const m = prependZero(Math.floor((seconds % 3600) / 60).toString(10));
-  const s = prependZero(Math.floor((seconds % 3600) % 60).toString(10));
-  return `${h}:${m}:${s}`;
-};
 let defaultTitle = "";
 type StopwatchState = {
   currentStatus: "stopped" | "started";
   timePassed: number;
 };
+const defaultStopwatchState: StopwatchState = {
+  currentStatus: "stopped",
+  timePassed: 0,
+};
+export const StopwatchCtx = createContext(defaultStopwatchState);
+
+type StopwatchBtn = {
+  text: string;
+  callback: () => void;
+};
+const defaultStartButtonState: StopwatchBtn = {
+  text: "Start",
+  callback: () => {
+    console.log("start");
+  },
+};
+const defaultStopButtonState: StopwatchBtn = {
+  text: "Stop",
+  callback: () => {
+    console.log("stop");
+  },
+};
+
+export const StopwatchButtonCtx = createContext({
+  text: "defaultText",
+  callback: () => {
+    console.log("default callback");
+  },
+});
 
 const Stopwatch: FC = () => {
-  const [state, setState] = useState<StopwatchState>({
-    currentStatus: "stopped",
-    timePassed: 0,
-  });
+  const [state, setState] = useState<StopwatchState>(defaultStopwatchState);
   useEffect(() => {
     defaultTitle = document.title;
   }, []);
@@ -40,7 +59,7 @@ const Stopwatch: FC = () => {
       ...state,
       timePassed: prevState.timePassed + 1,
     }));
-    console.log("t");
+    // console.log("t");
   };
 
   const startStopwatch = () => {
@@ -68,13 +87,21 @@ const Stopwatch: FC = () => {
           : styles.stopwatchOff
       }
     >
-      <TimeHeader
-        text={convertSecondsToTimeString(state.timePassed)}
-        active={state.currentStatus === "started"}
-      />
+      <StopwatchCtx.Provider value={defaultStopwatchState}>
+        <TimeHeader />
+      </StopwatchCtx.Provider>
+      {/* {...b,startButton:{...b.startButton,callback:a}} */}
       <div className={styles.buttonRow}>
-        <StopwatchButton text={"Start"} callback={startStopwatch} />
-        <StopwatchButton text={"Stop"} callback={stopStopwatch} />
+        <StopwatchButtonCtx.Provider
+          value={{ ...defaultStartButtonState, callback: startStopwatch }}
+        >
+          <StopwatchButton />
+        </StopwatchButtonCtx.Provider>
+        <StopwatchButtonCtx.Provider
+          value={{ ...defaultStopButtonState, callback: stopStopwatch }}
+        >
+          <StopwatchButton />
+        </StopwatchButtonCtx.Provider>
       </div>
     </div>
   );

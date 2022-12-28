@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
+import { StopwatchButtonCtx } from "..";
 import styles from "./stopwatchButton.module.css";
 
 type StopwatchButtonProps = {
@@ -6,7 +7,8 @@ type StopwatchButtonProps = {
   callback: () => void;
 };
 
-const StopwatchButton: FC<StopwatchButtonProps> = ({ text, callback }) => {
+const StopwatchButton: FC = () => {
+  const { text, callback } = useContext(StopwatchButtonCtx);
   return (
     <button type="button" className={styles.button} onClick={callback}>
       {text}

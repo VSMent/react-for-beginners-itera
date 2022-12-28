@@ -1,4 +1,6 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
+import { StopwatchCtx } from "..";
+import { convertSecondsToTimeString } from "../../utils/time";
 import styles from "./timeHeader.module.css";
 
 type TimeHeaderProps = {
@@ -6,8 +8,14 @@ type TimeHeaderProps = {
   active: boolean;
 };
 
-const TimeHeader: FC<TimeHeaderProps> = ({ text, active }) => {
-  return <h2 className={active ? styles.on : styles.off}>{text}</h2>;
+const TimeHeader: FC = () => {
+  const { currentStatus, timePassed } = useContext(StopwatchCtx);
+
+  return (
+    <h2 className={currentStatus === "started" ? styles.on : styles.off}>
+      {convertSecondsToTimeString(timePassed)}
+    </h2>
+  );
 };
 
 export default TimeHeader;
