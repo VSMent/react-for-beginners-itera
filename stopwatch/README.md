@@ -7,7 +7,11 @@
 - [x] on stop timer should be stopped, the latest value should stay;
 - [x] on stop, page title should be returned back to normal;
 - [x] do it using context;
-- [ ] Implement same functionality with MobX.
+- [x] Implement same functionality with MobX.
+  
+
+All Done!!!
+🥳🥳🥳
 
 ---
 
