@@ -1,4 +1,5 @@
 import { FC, useContext } from "react";
+import { observer } from "mobx-react-lite";
 import { StopwatchCtx } from "..";
 import { convertSecondsToTimeString } from "../../utils/time";
 import styles from "./timeHeader.module.css";
@@ -8,7 +9,7 @@ type TimeHeaderProps = {
   active: boolean;
 };
 
-const TimeHeader: FC = () => {
+const TimeHeader: FC = observer(() => {
   const { currentStatus, timePassed } = useContext(StopwatchCtx);
 
   return (
@@ -16,6 +17,6 @@ const TimeHeader: FC = () => {
       {convertSecondsToTimeString(timePassed)}
     </h2>
   );
-};
+});
 
 export default TimeHeader;

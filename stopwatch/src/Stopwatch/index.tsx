@@ -1,9 +1,10 @@
-import { createContext, FC, useEffect, useState } from "react";
+import { makeAutoObservable } from "mobx";
+import { observer } from "mobx-react-lite";
+import { createContext, FC, useEffect } from "react";
 import styles from "./stopwatch.module.css";
 import StopwatchButton from "./StopwatchButton";
 import TimeHeader from "./TimeHeader";
 
-let defaultTitle = "";
 type StopwatchState = {
   currentStatus: "stopped" | "started";
   timePassed: number;
@@ -12,8 +13,6 @@ const defaultStopwatchState: StopwatchState = {
   currentStatus: "stopped",
   timePassed: 0,
 };
-
-export const StopwatchCtx = createContext(defaultStopwatchState);
 
 type StopwatchBtn = {
   text: string;
@@ -39,71 +38,72 @@ export const StopwatchButtonCtx = createContext({
   },
 });
 
-const Stopwatch: FC = () => {
-  const [state, setState] = useState<StopwatchState>(defaultStopwatchState);
+class StopwatchStore {
+  currentStatus: "stopped" | "started" = "stopped";
+  timePassed: number = 0;
+  defaultTitle: string = "";
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+  setDefaultTitle = (val: string) => {
+    this.defaultTitle = val;
+  };
+  start = () => {
+    this.timePassed = 0;
+    this.currentStatus = "started";
+    document.title = "Timer is running";
+  };
+  stop = () => {
+    this.currentStatus = "stopped";
+    document.title = this.defaultTitle;
+  };
+  doTick = () => {
+    this.timePassed += 1;
+  };
+}
+
+const stopwatchStore = new StopwatchStore();
+export const StopwatchCtx = createContext(stopwatchStore);
+const Stopwatch: FC = observer(() => {
+  const { currentStatus, doTick, start, stop, setDefaultTitle } =
+    stopwatchStore;
   useEffect(() => {
-    defaultTitle = document.title;
+    setDefaultTitle(document.title);
   }, []);
   useEffect(() => {
     let interval: NodeJS.Timer;
-    if (state.currentStatus === "started") {
-      interval = setInterval(tick, 1000);
+    if (currentStatus === "started") {
+      interval = setInterval(doTick, 1000);
     }
     return () => {
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.currentStatus]);
-
-  const tick = () => {
-    setState((prevState) => ({
-      ...state,
-      timePassed: prevState.timePassed + 1,
-    }));
-    // console.log("t");
-  };
-
-  const startStopwatch = () => {
-    setState({
-      ...state,
-      timePassed: 0,
-      currentStatus: "started",
-    });
-    document.title = "Timer is running";
-  };
-
-  const stopStopwatch = () => {
-    setState({
-      ...state,
-      currentStatus: "stopped",
-    });
-    document.title = defaultTitle;
-  };
+  }, [currentStatus]);
 
   return (
     <div
       className={
-        state.currentStatus === "started"
-          ? styles.stopwatchOn
-          : styles.stopwatchOff
+        currentStatus === "started" ? styles.stopwatchOn : styles.stopwatchOff
       }
     >
-      <StopwatchCtx.Provider value={state}>
+      <StopwatchCtx.Provider value={stopwatchStore}>
         <TimeHeader />
       </StopwatchCtx.Provider>
       <div className={styles.buttonRow}>
         <StopwatchButtonCtx.Provider
-          value={{ ...defaultStartButtonState, callback: startStopwatch }}
+          value={{ ...defaultStartButtonState, callback: start }}
         >
           <StopwatchButton />
         </StopwatchButtonCtx.Provider>
         <StopwatchButtonCtx.Provider
-          value={{ ...defaultStopButtonState, callback: stopStopwatch }}
+          value={{ ...defaultStopButtonState, callback: stop }}
         >
           <StopwatchButton />
         </StopwatchButtonCtx.Provider>
       </div>
     </div>
   );
-};
+});
 export default Stopwatch;
