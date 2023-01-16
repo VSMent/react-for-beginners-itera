@@ -6,7 +6,7 @@
 - [x] on start page title should be changed to "Timer is running";
 - [x] on stop timer should be stopped, the latest value should stay;
 - [x] on stop, page title should be returned back to normal;
-- [ ] do it using context;
+- [x] do it using context;
 - [ ] Implement same functionality with MobX.
 
 ---
